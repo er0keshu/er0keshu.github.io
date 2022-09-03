@@ -50,6 +50,7 @@
                 url: location.href,
                 hash: location.hash,
                 title: document.title,
+                canBack: history.length > 1,
               }),
             300
           )
