@@ -43,6 +43,8 @@
       window.addEventListener(
         type,
         () => {
+          if (type === 'popstate') history.go(-1)
+            
           setTimeout(
             () =>
               postMessage(type, {
@@ -50,8 +52,7 @@
                 url: location.href,
                 hash: location.hash,
                 title: document.title,
-                canBack: history.length > 1,
-                history: history.length
+                canBack: history.length > 1
               }),
             300
           )
