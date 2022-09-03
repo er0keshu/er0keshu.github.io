@@ -36,7 +36,8 @@
         'pushState',
         'replaceState',
       ],
-      postMessage = (type, payload = {}) => uw.postMessage({ type, payload })
+      postMessage = (type, payload = {}) =>
+        uw.postMessage({ data: { type, payload } })
 
     events.forEach((type) => {
       window.addEventListener(
