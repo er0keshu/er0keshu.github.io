@@ -1,5 +1,5 @@
 ;(function () {
-  window.addEventListener('hashchange', function () {
-    console.log('h5:', location.href)
+  window.addEventListener('popState', function (evt) {
+    console.log('h5:', evt)
   })
 })()
