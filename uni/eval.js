@@ -15,6 +15,7 @@
 
     events.forEach((evt) => {
       window.addEventListener(evt, () => {
+        alert(evt)
         postMessage(evt, { env, url: location.href, hash: location.hash })
       })
     })
