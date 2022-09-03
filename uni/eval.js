@@ -9,15 +9,52 @@
       })
     })
 
-    const events = ['DOMContentLoaded', 'load', 'unload', 'hashchange'],
-      postMessage = (event, payload = {}) =>
-        uw.postMessage({ data: { event, payload } })
+    let oldURL = location.href
 
-    events.forEach((evt) => {
-      window.addEventListener(evt, () => {
-        alert(evt)
-        postMessage(evt, { env, url: location.href, hash: location.hash })
-      }, false)
+    const _override = function (type) {
+      var origin = history[type]
+      return function () {
+        var rv = origin.apply(this, arguments)
+        var e = new Event(type)
+        e.newURL = arguments[2]
+        e.oldURL = oldURL
+        oldURL = location.href
+        window.dispatchEvent(e)
+        return rv
+      }
+    }
+
+    history.pushState = _override('pushState')
+    history.replaceState = _override('replaceState')
+
+    const events = [
+        'DOMContentLoaded',
+        'load',
+        'unload',
+        'hashchange',
+        'popstate',
+        'pushState',
+        'replaceState',
+      ],
+      postMessage = (type, payload = {}) => uw.postMessage({ type, payload })
+
+    events.forEach((type) => {
+      window.addEventListener(
+        type,
+        () => {
+          setTimeout(
+            () =>
+              postMessage(type, {
+                env,
+                url: location.href,
+                hash: location.hash,
+                title: document.title,
+              }),
+            300
+          )
+        },
+        false
+      )
     })
   })
 })()
