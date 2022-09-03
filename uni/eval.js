@@ -51,7 +51,7 @@
                 hash: location.hash,
                 title: document.title,
                 canBack: history.length > 1,
-                history
+                history: history.length
               }),
             300
           )
