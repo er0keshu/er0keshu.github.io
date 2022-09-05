@@ -9,7 +9,9 @@
       })
     })
 
+    let initUrl = ''
     let oldURL = location.href
+    let historyLen = 0
 
     const _override = function (type) {
       var origin = history[type]
@@ -43,16 +45,20 @@
       window.addEventListener(
         type,
         () => {
-          if (type === 'popstate') history.go(-1)
-            
+          if (type === 'DOMContentLoaded') { initUrl = location.href; historyLen = 1 }
+          if(type === 'pushState') historyLen += 1
+          if(type === 'popstate') historyLen -= 1
+
           setTimeout(
             () =>
               postMessage(type, {
                 env,
+                initUrl,
                 url: location.href,
                 hash: location.hash,
                 title: document.title,
-                canBack: history.length > 1
+                historyLen,
+                canBack: historyLen > 1,
               }),
             300
           )
