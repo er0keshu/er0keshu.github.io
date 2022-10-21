@@ -95,7 +95,8 @@ window.callSubApp = function(payload = {}) {
   postMessage({type: 'log', content:JSON.stringify(payload)})
   switch (payload.type) {
       case 'pageBack':
-          alert(document.referrer === '')
+        window.history.go(-1)
+          alert(historyLen === 1)
           historyLen === 1 ? postMessage({type: 'noBack'}) : window.history.go(-1)
           break
       default:
