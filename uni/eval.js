@@ -97,7 +97,7 @@ window.callSubApp = function(payload = {}) {
       case 'pageBack':
           alert(historyLen === 1)
           if(historyLen === 1) postMessage({type: 'noBack'})
-           else window.history.go(-1)
+          else window.history.go(-1)
           break
       default:
           document.getElementById('msgBox').innerHTML = JSON.stringify(payload)
