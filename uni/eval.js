@@ -52,7 +52,7 @@ document.addEventListener('UniAppJSBridgeReady', function () {
   * @param {object} payload 接收对象
   * */
   function postMessage(payload = {}) {
-      alert(999)
+      alert(payload.type)
       uw.postMessage({data: payload})
     // if (env.includes('h5')) {
     //     window.parent.postMessage({
@@ -95,6 +95,7 @@ window.callSubApp = function(payload = {}) {
   postMessage({type: 'log', content:JSON.stringify(payload)})
   switch (payload.type) {
       case 'pageBack':
+          alert(document.referrer === '')
           document.referrer === '' ? postMessage({type: 'noBack'}) : window.history.go(-1)
           break
       default:
