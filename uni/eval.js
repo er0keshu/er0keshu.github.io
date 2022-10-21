@@ -7,6 +7,12 @@
 })(window);
 
 
+
+let initUrl = ''
+let oldURL = location.href
+let historyLen = 0
+
+
 document.addEventListener('UniAppJSBridgeReady', function () {
   const uw = uni.webView
 
@@ -16,10 +22,6 @@ document.addEventListener('UniAppJSBridgeReady', function () {
       return res[k]
     })
   })
-
-  let initUrl = ''
-  let oldURL = location.href
-  let historyLen = 0
 
   const _override = function (type) {
     var origin = history[type]
