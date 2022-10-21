@@ -91,6 +91,7 @@ document.addEventListener('UniAppJSBridgeReady', function () {
 })
 
 window.callSubApp = function(payload = {}) {
+  alert(payload)
   postMessage({type: 'log', content:JSON.stringify(payload)})
   switch (payload.type) {
       case 'pageBack':
