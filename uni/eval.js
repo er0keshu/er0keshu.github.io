@@ -91,10 +91,10 @@ document.addEventListener('UniAppJSBridgeReady', function () {
 })
 
 window.callSubApp = function(payload = {}) {
-  alert(payload.type)
   postMessage({type: 'log', content:JSON.stringify(payload)})
   switch (payload.type) {
       case 'pageBack':
+          alert(payload.type)
           document.referrer === '' ? postMessage({type: 'noBack'}) : window.history.go(-1)
           break
       default:
