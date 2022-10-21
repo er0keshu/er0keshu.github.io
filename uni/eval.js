@@ -3,7 +3,7 @@
   document.addEventListener('UniAppJSBridgeReady', function () {
     const uw = uni.webView
 
-    let env = ''
+    let env = []
     uw.getEnv((res) => {
       env = Object.keys(res).filter(function (k) {
         return res[k]
@@ -38,9 +38,22 @@
       'popstate',
       'pushState',
       'replaceState',
-    ],
-      postMessage = (type, payload = {}) =>
-        uw.postMessage({ data: { type, payload } })
+    ]
+
+    /**
+    * @description 向父级发送通知
+    * @param {object} payload 接收对象
+    * */
+    function postMessage(payload = {}) {
+        uw.postMessage({data: payload})
+      // if (env.includes('h5')) {
+      //     window.parent.postMessage({
+      //         detail: { data: [payload] }
+      //     }, '*')
+      // } else {
+      //     uw.postMessage({data: payload})
+      // }
+    }
 
     events.forEach((type) => {
       window.addEventListener(
@@ -52,7 +65,8 @@
 
           setTimeout(
             () =>
-              postMessage(type, {
+              postMessage({
+                type,
                 env,
                 initUrl,
                 url: location.href,
@@ -68,4 +82,22 @@
       )
     })
   })
-})();
+
+  window.callSubApp = function(payload = {}) {
+      postMessage({type: 'log', content:JSON.stringify(payload)})
+      switch (payload.type) {
+          case 'pageBack':
+              document.referrer === '' ? postMessage({type: 'noBack'}) : window.history.go(-1)
+              break
+          default:
+              document.getElementById('msgBox').innerHTML = JSON.stringify(payload)
+      }
+  }
+
+  window.callParentApp = function(payload = {}) {
+    return new Promise((resolve, reject) => {
+
+      })
+  }
+
+})(window);
